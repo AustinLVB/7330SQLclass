@@ -7,5 +7,5 @@
 #The raw data, imported into MySQL, is in .CSV format with header row deleted and Salary column changed from 'currency' 
 #to 'general number' type with precision of 2 decimal places.
 #
-#To import the raw data, make the 2 changes to the .CSV file and then run the Load command commented out in the 
-#WHdataLoad.sql file.
+#To import the raw data, make the 2 changes to the .CSV file and then run the top part of the SQL script to create the temp db #and final SalaryTable and Employee tables.
+
