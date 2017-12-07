@@ -1,1 +1,8 @@
+This is the readme file for the SQL project in MSDS 7330-403
+The FINAL SUBMISSION folder contains the final version of the assets to be turned in and graded.
 
+Follow the directions in the WHDB.sql file to build the temp and final 2 databases, Employee and SalaryTable.
+You will need to edit the location of the source file, WHData1CSV.csv, to wherever you have the file on your hard disk.
+Otherwise, the SQL script will create and clean up temporary tables.
+
+Diagram code files are included in the FINAL SUBMISSION folder.
