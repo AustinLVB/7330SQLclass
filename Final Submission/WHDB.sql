@@ -53,7 +53,6 @@ Foreign key (Salary_ID) References SalaryTable(SID)
 );
 
 
-
 /******** Populate SalaryTable and Employee table with content from .csv ********/
 
 BEGIN;
@@ -68,18 +67,12 @@ BEGIN;
 Insert into SalaryTable (SID, Salary, PayBasis)
  Select TempHolding1.ID, TempHolding1.Salary, TempHolding1.PayBasis
  From TempHolding1;
- 
-
  Commit;
- 
- 
  
  select * from SalaryTable;
  
  /*****Delete TempHolding1 Table ******/
  Drop table TempHolding1;
- 
- 
  
  /********ANALYSIS********/
  
@@ -88,7 +81,6 @@ Insert into SalaryTable (SID, Salary, PayBasis)
 Select Distinct Employee.PositionTitle as Title
 From Employee
 order by Title asc;
-
 
 /******Analysis based on Salary********/
 /******Basic Joins to Test the Output *******/
@@ -113,8 +105,6 @@ SELECT PositionTitle, Count(*)
 FROM Employee
 Where PositionTItle LIKE '%Legislative Assistant%'
 Group By PositionTItle;
-
-
 
 /*Deputy Assistant*/
 SELECT PositionTitle AS Title, Salary AS Pay
@@ -227,79 +217,22 @@ FROM Employee
 Where PositionTItle LIKE '%Deputy Assistant to the President%'
 Group By PositionTItle;
 
-/*NOT WORKING AT THIS TIME */
-/*SELECT Distinct EmployeeName, PositionTItle,
-       (SELECT COUNT(*) 
-          FROM SalaryTable
-         WHERE  Employee.EID = SalaryTable.SID)
-  FROM Employee;   */
+/*Selecting both Senior and Director to compare to non Senior and non Director to find avg*/
+select case when PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director'
+end as Senior_Director, CONCAT('$', FORMAT(avg(Salary), 2))
+as AvgSalary
+From WHdata.SalaryData6
+Group by case 
+when  PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director' end;
 
-
-    
-/*Only returns list of Position Titles
-SELECT Distinct PositionTItle FROM Employee, SalaryTable  WHERE Salary <> (Select AVG(Salary) From SalaryTable) 
-Group by PositionTItle, Salary;*/
-
-/* These 3 do not return the MaxPay for the Where Clause Title, rather they return the MaxPay for the whole set of entries -- 179,700.
-SELECT PositionTitle, MAX(Salary) as MaxPay
-FROM Employee, SalaryTable
-Where PositionTItle LIKE '%Director of Special Projects and Special Assistant to the Office of the Chief of Staff%'
-GROUP BY PositionTitle;
-
-
-SELECT PositionTitle, MAX(Salary) as MaxPay
-FROM Employee, SalaryTable
-Where PositionTItle LIKE '%Advisor%'
-GROUP BY PositionTitle;
-
-SELECT PositionTitle, MAX(Salary) as MaxPay
-FROM Employee, SalaryTable
-Where PositionTItle LIKE '%Special Assistant%'  
-GROUP BY PositionTitle;
-*/
-
-/* This sets up the headings but the return is empty
-
-Select PositionTitle, Salary, Count(*), Min(Salary) as MinPay from Employee, SalaryTable
-Where PositionTitle = 'ADVISOR'
-Group by PositionTitle, Salary
-Having Min(Salary) = Salary;
-*/
-
-/*Returns Header, Position Title, Max or Min of the whole set, not just the Position Title 
-Select Distinct Salary, PositionTitle from Employee, SalaryTable
-Where Salary = (
- select Min(Salary) as MinPay from SalaryTable where PositionTItle LIKE '%Director of Special Projects and Special Assistant to the Senior Advisor%' )
- group by PositionTitle, Salary
- having Min(Salary) = Salary;
- 
- Select Distinct Salary, PositionTitle from Employee, SalaryTable
-Where Salary = (
- select Max(Salary) as MaxPay from SalaryTable where PositionTItle LIKE '%Director of Special Projects and Special Assistant to the Senior Advisor%' )
- group by PositionTitle, Salary
- having Max(Salary) = Salary;
- */
-
-/* No output even though no errors. Just OK...what does that mean?? 
-Select Distinct Salary, PositionTitle from Employee, SalaryTable
-Where Salary = (
-	select Max(Salary) as MaxPay from SalaryTable 
-	where PositionTItle LIKE '%Director of Special Projects and Special Assistant to the Senior Advisor%' 
-	group by PositionTitle, Salary
-	having Max(Salary) = Salary)
- Group by PositionTitle, Salary;
-*/
-
-
-/*Where PositionTItle LIKE '%Director of Special Projects and Special Assistant to the Senior Advisor%'*/
-
-
-/* Outputs all Titles and the Max & Min of the whole set, not  the PositionTitle
-SELECT PositionTitle, MAX(Salary) as MaxPay, MIN(Salary) as MinPay
-FROM Employee, SalaryTable
-GROUP BY PositionTitle;
-*/
-
-
- 
-
+/*Selecting both Senior and Director to compare to non Senior and non Director to sum*/
+select case when PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director'
+end as Senior_Director, CONCAT('$', FORMAT(sum(Salary), 2)) 
+as SumSalary
+From WHdata.SalaryData6
+Group by case  
+when  PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director' end;
