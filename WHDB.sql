@@ -227,6 +227,25 @@ FROM Employee
 Where PositionTItle LIKE '%Deputy Assistant to the President%'
 Group By PositionTItle;
 
+select case when PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director'
+end as Senior_Director, CONCAT('$', FORMAT(avg(Salary), 2))
+as AvgSalary
+From WHdata.SalaryData6
+Group by case 
+when  PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director' end;
+
+
+select case when PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director'
+end as Senior_Director, CONCAT('$', FORMAT(sum(Salary), 2)) 
+as SumSalary
+From WHdata.SalaryData6
+Group by case  
+when  PositionTitle like '%Senior%' or PositionTitle like '%Director%' 
+then 'Senior/Director' else 'Not Senior/Director' end;
+
 /*NOT WORKING AT THIS TIME */
 /*SELECT Distinct EmployeeName, PositionTItle,
        (SELECT COUNT(*) 
